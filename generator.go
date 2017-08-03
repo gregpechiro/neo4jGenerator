@@ -178,7 +178,7 @@ func Add{{ $strct }}({{ toLowerFirst $strct }} {{ $strct }}) error {
 	defer conn.Close()
 
 	_, err = conn.ExecNeo("CREATE ({{ toLowerFirst $strct }}:{{ $strct }} { {{ $fieldInputs }} })", map[string]interface{}{
-		{{ range $fields}}"{{ toLowerFirst $strct }}{{ .Field }}":{{ toLowerFirst $strct }}.{{ .Field }},
+		{{ range $fields}}"{{ toLowerFirst $strct }}{{ .Field }}":{{ toLowerFirst $strct }}.{{ .Name }},
 		{{ end }}
 	})
 
@@ -208,7 +208,7 @@ func GetAll{{ $strct }}() ([]{{ $strct }}, error) {
 		}
 		{{ toLowerFirst $strct }} := {{ $strct }}{}
 		{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-			{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+			{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 		}
 		{{ end }}
 		{{ toLowerFirst $strct }}s = append({{ toLowerFirst $strct }}s, {{ toLowerFirst $strct }})
@@ -238,7 +238,7 @@ func Get{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) ({{ $str
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ $strct }}", map[string]interface{}{
+	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ toLowerFirst $strct }}", map[string]interface{}{
 		"{{ .Field }}":{{ toLowerFirst .Name }},
 	})
 	if err != nil {
@@ -260,7 +260,7 @@ func Get{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) ({{ $str
 	}
 
 	{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-		{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+		{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 	}
 	{{ end }}
 
@@ -276,7 +276,7 @@ func GetOnlyOne{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) (
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ $strct }}", map[string]interface{}{
+	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ toLowerFirst $strct }}", map[string]interface{}{
 		"{{ .Field }}":{{ toLowerFirst .Name }},
 	})
 
@@ -302,7 +302,7 @@ func GetOnlyOne{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) (
 		return {{ toLowerFirst $strct }}, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 	{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-		{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+		{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 	}
 	{{ end }}
 	return {{ toLowerFirst $strct }}, nil
@@ -316,7 +316,7 @@ func GetAll{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) ([]{{
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ $strct }}", map[string]interface{}{
+	rows, err := conn.QueryNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) RETURN {{ toLowerFirst $strct }}", map[string]interface{}{
 		"{{ .Field }}":{{ toLowerFirst .Name }},
 	})
 
@@ -335,7 +335,7 @@ func GetAll{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) ([]{{
 		}
 		{{ toLowerFirst $strct }} := {{ $strct }}{}
 		{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-			{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+			{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 		}
 		{{ end }}
 		{{ toLowerFirst $strct }}s = append({{ toLowerFirst $strct }}s, {{ toLowerFirst $strct }})
@@ -352,9 +352,9 @@ func UpdateAll{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}, {{
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} }) SET {{ toLowerFirst $strct }} += { {{ $fieldInputs }} }", map[string]interface{}{
+	_, err = conn.ExecNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) SET {{ toLowerFirst $strct }} += { {{ $fieldInputs }} }", map[string]interface{}{
 		"{{ .Field }}":{{ toLowerFirst .Name }},
-		{{ range $fields}}"{{ toLowerFirst $strct }}{{ .Field }}":{{ toLowerFirst $strct }}.{{ .Field }},
+		{{ range $fields}}"{{ toLowerFirst $strct }}{{ .Field }}":{{ toLowerFirst $strct }}.{{ .Name }},
 		{{ end }}
 	})
 	return err
@@ -411,7 +411,7 @@ func Get{{ $strct }}ByCustom(query map[string]interface{}) ({{ $strct }}, error)
 	}
 
 	{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-		{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+		{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 	}
 	{{ end }}
 
@@ -459,7 +459,7 @@ func GetOnlyOne{{ $strct }}ByCustom(query map[string]interface{}) ({{ $strct }},
 	}
 
 	{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-		{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+		{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 	}
 	{{ end }}
 
@@ -499,7 +499,7 @@ func GetAll{{ $strct }}ByCustom(query map[string]interface{}) ([]{{ $strct }}, e
 		}
 		{{ toLowerFirst $strct }} := {{ $strct }}{}
 		{{ range $fields }}if {{ .Field }}, ok := node.Properties["{{ .Field }}"].({{ .Type }}); ok {
-			{{ toLowerFirst $strct }}.{{ .Field }} = {{ .Field }}
+			{{ toLowerFirst $strct }}.{{ .Name }} = {{ .Field }}
 		}
 		{{ end }}
 		{{ toLowerFirst $strct }}s = append({{ toLowerFirst $strct }}s, {{ toLowerFirst $strct }})
@@ -524,7 +524,7 @@ func UpdateAll{{ $strct }}ByCustom(params map[string]interface{}, {{ toLowerFirs
 	queryStr += strings.Join(qKeys, ", ")
 	queryStr += "}) SET {{ toLowerFirst $strct }} += { {{ $fieldInputs }} }"
 
-	{{ range $fields }}params["{{ toLowerFirst $strct }}{{ .Field }}"] = {{ toLowerFirst $strct }}.{{ .Field }}
+	{{ range $fields }}params["{{ toLowerFirst $strct }}{{ .Field }}"] = {{ toLowerFirst $strct }}.{{ .Name }}
 	{{ end }}
 
 	_, err = conn.ExecNeo(queryStr, params)

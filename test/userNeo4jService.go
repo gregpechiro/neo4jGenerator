@@ -23,13 +23,13 @@ func AddUser(user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("CREATE (user:User { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} })", map[string]interface{}{
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("CREATE (user:User { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} })", map[string]interface{}{
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 
 	return err
@@ -57,23 +57,23 @@ func GetAllUser() ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -89,7 +89,7 @@ func IndexUserById() error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("CREATE INDEX ON :User(Id)", nil)
+	_, err = conn.ExecNeo("CREATE INDEX ON :User(id)", nil)
 
 	return err
 }
@@ -103,8 +103,8 @@ func GetUserById(id string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Id:{ Id } }) RETURN User", map[string]interface{}{
-		"Id": id,
+	rows, err := conn.QueryNeo("MATCH (user:User{ id:{ id } }) RETURN User", map[string]interface{}{
+		"id": id,
 	})
 	if err != nil {
 		return user, err
@@ -124,23 +124,23 @@ func GetUserById(id string) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -155,8 +155,8 @@ func GetOnlyOneUserById(id string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Id:{ Id } }) RETURN User", map[string]interface{}{
-		"Id": id,
+	rows, err := conn.QueryNeo("MATCH (user:User{ id:{ id } }) RETURN User", map[string]interface{}{
+		"id": id,
 	})
 
 	if err != nil {
@@ -180,23 +180,23 @@ func GetOnlyOneUserById(id string) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -210,8 +210,8 @@ func GetAllUserById(id string) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Id:{ Id } }) RETURN User", map[string]interface{}{
-		"Id": id,
+	rows, err := conn.QueryNeo("MATCH (user:User{ id:{ id } }) RETURN User", map[string]interface{}{
+		"id": id,
 	})
 
 	if err != nil {
@@ -228,23 +228,23 @@ func GetAllUserById(id string) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -261,14 +261,14 @@ func UpdateAllUserById(id string, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Id:{ Id }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Id":         id,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ id:{ id }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"id":         id,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -281,8 +281,8 @@ func DeleteAllUserById(id string) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Id:{ Id }) DETACH DELETE user", map[string]interface{}{
-		"Id": id,
+	_, err = conn.ExecNeo("MATCH (user:User{ id:{ id }) DETACH DELETE user", map[string]interface{}{
+		"id": id,
 	})
 	return err
 }
@@ -296,8 +296,8 @@ func GetUserByName(name string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Name:{ Name } }) RETURN User", map[string]interface{}{
-		"Name": name,
+	rows, err := conn.QueryNeo("MATCH (user:User{ name:{ name } }) RETURN User", map[string]interface{}{
+		"name": name,
 	})
 	if err != nil {
 		return user, err
@@ -317,23 +317,23 @@ func GetUserByName(name string) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -348,8 +348,8 @@ func GetOnlyOneUserByName(name string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Name:{ Name } }) RETURN User", map[string]interface{}{
-		"Name": name,
+	rows, err := conn.QueryNeo("MATCH (user:User{ name:{ name } }) RETURN User", map[string]interface{}{
+		"name": name,
 	})
 
 	if err != nil {
@@ -373,23 +373,23 @@ func GetOnlyOneUserByName(name string) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -403,8 +403,8 @@ func GetAllUserByName(name string) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Name:{ Name } }) RETURN User", map[string]interface{}{
-		"Name": name,
+	rows, err := conn.QueryNeo("MATCH (user:User{ name:{ name } }) RETURN User", map[string]interface{}{
+		"name": name,
 	})
 
 	if err != nil {
@@ -421,23 +421,23 @@ func GetAllUserByName(name string) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -454,14 +454,14 @@ func UpdateAllUserByName(name string, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Name:{ Name }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Name":       name,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ name:{ name }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"name":       name,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -474,8 +474,8 @@ func DeleteAllUserByName(name string) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Name:{ Name }) DETACH DELETE user", map[string]interface{}{
-		"Name": name,
+	_, err = conn.ExecNeo("MATCH (user:User{ name:{ name }) DETACH DELETE user", map[string]interface{}{
+		"name": name,
 	})
 	return err
 }
@@ -487,7 +487,7 @@ func IndexUserByEmail() error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("CREATE INDEX ON :User(Email)", nil)
+	_, err = conn.ExecNeo("CREATE INDEX ON :User(email)", nil)
 
 	return err
 }
@@ -501,8 +501,8 @@ func GetUserByEmail(email string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Email:{ Email } }) RETURN User", map[string]interface{}{
-		"Email": email,
+	rows, err := conn.QueryNeo("MATCH (user:User{ email:{ email } }) RETURN User", map[string]interface{}{
+		"email": email,
 	})
 	if err != nil {
 		return user, err
@@ -522,23 +522,23 @@ func GetUserByEmail(email string) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -553,8 +553,8 @@ func GetOnlyOneUserByEmail(email string) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Email:{ Email } }) RETURN User", map[string]interface{}{
-		"Email": email,
+	rows, err := conn.QueryNeo("MATCH (user:User{ email:{ email } }) RETURN User", map[string]interface{}{
+		"email": email,
 	})
 
 	if err != nil {
@@ -578,23 +578,23 @@ func GetOnlyOneUserByEmail(email string) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -608,8 +608,8 @@ func GetAllUserByEmail(email string) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Email:{ Email } }) RETURN User", map[string]interface{}{
-		"Email": email,
+	rows, err := conn.QueryNeo("MATCH (user:User{ email:{ email } }) RETURN User", map[string]interface{}{
+		"email": email,
 	})
 
 	if err != nil {
@@ -626,23 +626,23 @@ func GetAllUserByEmail(email string) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -659,14 +659,14 @@ func UpdateAllUserByEmail(email string, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Email:{ Email }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Email":      email,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ email:{ email }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"email":      email,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -679,8 +679,8 @@ func DeleteAllUserByEmail(email string) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Email:{ Email }) DETACH DELETE user", map[string]interface{}{
-		"Email": email,
+	_, err = conn.ExecNeo("MATCH (user:User{ email:{ email }) DETACH DELETE user", map[string]interface{}{
+		"email": email,
 	})
 	return err
 }
@@ -694,8 +694,8 @@ func GetUserByAge(age int) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Age:{ Age } }) RETURN User", map[string]interface{}{
-		"Age": age,
+	rows, err := conn.QueryNeo("MATCH (user:User{ age:{ age } }) RETURN User", map[string]interface{}{
+		"age": age,
 	})
 	if err != nil {
 		return user, err
@@ -715,23 +715,23 @@ func GetUserByAge(age int) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -746,8 +746,8 @@ func GetOnlyOneUserByAge(age int) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Age:{ Age } }) RETURN User", map[string]interface{}{
-		"Age": age,
+	rows, err := conn.QueryNeo("MATCH (user:User{ age:{ age } }) RETURN User", map[string]interface{}{
+		"age": age,
 	})
 
 	if err != nil {
@@ -771,23 +771,23 @@ func GetOnlyOneUserByAge(age int) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -801,8 +801,8 @@ func GetAllUserByAge(age int) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Age:{ Age } }) RETURN User", map[string]interface{}{
-		"Age": age,
+	rows, err := conn.QueryNeo("MATCH (user:User{ age:{ age } }) RETURN User", map[string]interface{}{
+		"age": age,
 	})
 
 	if err != nil {
@@ -819,23 +819,23 @@ func GetAllUserByAge(age int) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -852,14 +852,14 @@ func UpdateAllUserByAge(age int, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Age:{ Age }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Age":        age,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ age:{ age }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"age":        age,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -872,8 +872,8 @@ func DeleteAllUserByAge(age int) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Age:{ Age }) DETACH DELETE user", map[string]interface{}{
-		"Age": age,
+	_, err = conn.ExecNeo("MATCH (user:User{ age:{ age }) DETACH DELETE user", map[string]interface{}{
+		"age": age,
 	})
 	return err
 }
@@ -887,8 +887,8 @@ func GetUserByActive(active bool) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Active:{ Active } }) RETURN User", map[string]interface{}{
-		"Active": active,
+	rows, err := conn.QueryNeo("MATCH (user:User{ active:{ active } }) RETURN User", map[string]interface{}{
+		"active": active,
 	})
 	if err != nil {
 		return user, err
@@ -908,23 +908,23 @@ func GetUserByActive(active bool) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -939,8 +939,8 @@ func GetOnlyOneUserByActive(active bool) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Active:{ Active } }) RETURN User", map[string]interface{}{
-		"Active": active,
+	rows, err := conn.QueryNeo("MATCH (user:User{ active:{ active } }) RETURN User", map[string]interface{}{
+		"active": active,
 	})
 
 	if err != nil {
@@ -964,23 +964,23 @@ func GetOnlyOneUserByActive(active bool) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -994,8 +994,8 @@ func GetAllUserByActive(active bool) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Active:{ Active } }) RETURN User", map[string]interface{}{
-		"Active": active,
+	rows, err := conn.QueryNeo("MATCH (user:User{ active:{ active } }) RETURN User", map[string]interface{}{
+		"active": active,
 	})
 
 	if err != nil {
@@ -1012,23 +1012,23 @@ func GetAllUserByActive(active bool) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -1045,14 +1045,14 @@ func UpdateAllUserByActive(active bool, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Active:{ Active }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Active":     active,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ active:{ active }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"active":     active,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -1065,8 +1065,8 @@ func DeleteAllUserByActive(active bool) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Active:{ Active }) DETACH DELETE user", map[string]interface{}{
-		"Active": active,
+	_, err = conn.ExecNeo("MATCH (user:User{ active:{ active }) DETACH DELETE user", map[string]interface{}{
+		"active": active,
 	})
 	return err
 }
@@ -1080,8 +1080,8 @@ func GetUserByHappy(happy bool) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Happy:{ Happy } }) RETURN User", map[string]interface{}{
-		"Happy": happy,
+	rows, err := conn.QueryNeo("MATCH (user:User{ happy:{ happy } }) RETURN User", map[string]interface{}{
+		"happy": happy,
 	})
 	if err != nil {
 		return user, err
@@ -1101,23 +1101,23 @@ func GetUserByHappy(happy bool) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -1132,8 +1132,8 @@ func GetOnlyOneUserByHappy(happy bool) (User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Happy:{ Happy } }) RETURN User", map[string]interface{}{
-		"Happy": happy,
+	rows, err := conn.QueryNeo("MATCH (user:User{ happy:{ happy } }) RETURN User", map[string]interface{}{
+		"happy": happy,
 	})
 
 	if err != nil {
@@ -1157,23 +1157,23 @@ func GetOnlyOneUserByHappy(happy bool) (User, error) {
 	if !ok {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -1187,8 +1187,8 @@ func GetAllUserByHappy(happy bool) ([]User, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.QueryNeo("MATCH (user:User{ Happy:{ Happy } }) RETURN User", map[string]interface{}{
-		"Happy": happy,
+	rows, err := conn.QueryNeo("MATCH (user:User{ happy:{ happy } }) RETURN User", map[string]interface{}{
+		"happy": happy,
 	})
 
 	if err != nil {
@@ -1205,23 +1205,23 @@ func GetAllUserByHappy(happy bool) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -1238,14 +1238,14 @@ func UpdateAllUserByHappy(happy bool, user User) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Happy:{ Happy }) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }", map[string]interface{}{
-		"Happy":      happy,
-		"userId":     user.Id,
-		"userName":   user.Name,
-		"userEmail":  user.Email,
-		"userAge":    user.Age,
-		"userActive": user.Active,
-		"userHappy":  user.Happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ happy:{ happy }) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }", map[string]interface{}{
+		"happy":      happy,
+		"userid":     user.Id,
+		"username":   user.Name,
+		"useremail":  user.Email,
+		"userage":    user.Age,
+		"useractive": user.Active,
+		"userhappy":  user.Happy,
 	})
 	return err
 }
@@ -1258,8 +1258,8 @@ func DeleteAllUserByHappy(happy bool) error {
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH (user:User{ Happy:{ Happy }) DETACH DELETE user", map[string]interface{}{
-		"Happy": happy,
+	_, err = conn.ExecNeo("MATCH (user:User{ happy:{ happy }) DETACH DELETE user", map[string]interface{}{
+		"happy": happy,
 	})
 	return err
 }
@@ -1300,23 +1300,23 @@ func GetUserByCustom(query map[string]interface{}) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -1362,23 +1362,23 @@ func GetOnlyOneUserByCustom(query map[string]interface{}) (User, error) {
 		return user, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 	}
 
-	if Id, ok := node.Properties["Id"].(string); ok {
-		user.Id = Id
+	if id, ok := node.Properties["id"].(string); ok {
+		user.Id = id
 	}
-	if Name, ok := node.Properties["Name"].(string); ok {
-		user.Name = Name
+	if name, ok := node.Properties["name"].(string); ok {
+		user.Name = name
 	}
-	if Email, ok := node.Properties["Email"].(string); ok {
-		user.Email = Email
+	if email, ok := node.Properties["email"].(string); ok {
+		user.Email = email
 	}
-	if Age, ok := node.Properties["Age"].(int); ok {
-		user.Age = Age
+	if age, ok := node.Properties["age"].(int); ok {
+		user.Age = age
 	}
-	if Active, ok := node.Properties["Active"].(bool); ok {
-		user.Active = Active
+	if active, ok := node.Properties["active"].(bool); ok {
+		user.Active = active
 	}
-	if Happy, ok := node.Properties["Happy"].(bool); ok {
-		user.Happy = Happy
+	if happy, ok := node.Properties["happy"].(bool); ok {
+		user.Happy = happy
 	}
 
 	return user, nil
@@ -1416,23 +1416,23 @@ func GetAllUserByCustom(query map[string]interface{}) ([]User, error) {
 			return users, fmt.Errorf("data[0] is not type graph.Node it is %T\n", data[0])
 		}
 		user := User{}
-		if Id, ok := node.Properties["Id"].(string); ok {
-			user.Id = Id
+		if id, ok := node.Properties["id"].(string); ok {
+			user.Id = id
 		}
-		if Name, ok := node.Properties["Name"].(string); ok {
-			user.Name = Name
+		if name, ok := node.Properties["name"].(string); ok {
+			user.Name = name
 		}
-		if Email, ok := node.Properties["Email"].(string); ok {
-			user.Email = Email
+		if email, ok := node.Properties["email"].(string); ok {
+			user.Email = email
 		}
-		if Age, ok := node.Properties["Age"].(int); ok {
-			user.Age = Age
+		if age, ok := node.Properties["age"].(int); ok {
+			user.Age = age
 		}
-		if Active, ok := node.Properties["Active"].(bool); ok {
-			user.Active = Active
+		if active, ok := node.Properties["active"].(bool); ok {
+			user.Active = active
 		}
-		if Happy, ok := node.Properties["Happy"].(bool); ok {
-			user.Happy = Happy
+		if happy, ok := node.Properties["happy"].(bool); ok {
+			user.Happy = happy
 		}
 
 		users = append(users, user)
@@ -1455,14 +1455,14 @@ func UpdateAllUserByCustom(params map[string]interface{}, user User) error {
 		qKeys = append(qKeys, k+": {"+k+"}")
 	}
 	queryStr += strings.Join(qKeys, ", ")
-	queryStr += "}) SET user += { Id:{userId}, Name:{userName}, Email:{userEmail}, Age:{userAge}, Active:{userActive}, Happy:{userHappy} }"
+	queryStr += "}) SET user += { id:{userid}, name:{username}, email:{useremail}, age:{userage}, active:{useractive}, happy:{userhappy} }"
 
-	params["userId"] = user.Id
-	params["userName"] = user.Name
-	params["userEmail"] = user.Email
-	params["userAge"] = user.Age
-	params["userActive"] = user.Active
-	params["userHappy"] = user.Happy
+	params["userid"] = user.Id
+	params["username"] = user.Name
+	params["useremail"] = user.Email
+	params["userage"] = user.Age
+	params["useractive"] = user.Active
+	params["userhappy"] = user.Happy
 
 	_, err = conn.ExecNeo(queryStr, params)
 	return err

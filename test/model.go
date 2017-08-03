@@ -14,17 +14,17 @@ func init() {
 	}
 }
 
-//go:generate go run ../main/main.go User
+//go:generate go run ../neo4jGenerator/main.go User
 type User struct {
-	Id     string `neo4j:"index"`
-	Name   string
-	Email  string `neo4j:"index"`
-	Age    int
-	Active bool
-	Happy  bool
+	Id     string `json:"id" neo4j:"index"`
+	Name   string `json:"name"`
+	Email  string `json:"email" neo4j:"index"`
+	Age    int    `json:"age"`
+	Active bool   `json:"active"`
+	Happy  bool   `json:"happy"`
 }
 
-//go:generate go run ../main/main.go Address
+//go:generate go run ../neo4jGenerator/main.go Address
 type Address struct {
 	Id     string
 	Street string
@@ -33,7 +33,7 @@ type Address struct {
 	zip    string
 }
 
-//go:generate go run ../main/main.go CreditCard
+//go:generate go run ../neo4jGenerator/main.go CreditCard
 type CreditCard struct {
 	Id             string
 	Number         string
