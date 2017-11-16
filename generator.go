@@ -368,7 +368,7 @@ func DeleteAll{{ $strct }}By{{ .Name }}({{ toLowerFirst .Name }} {{ .Type }}) er
 	}
 	defer conn.Close()
 
-	_, err = conn.ExecNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} }) DETACH DELETE {{ toLowerFirst $strct }}", map[string]interface{}{
+	_, err = conn.ExecNeo("MATCH ({{ toLowerFirst $strct }}:{{ $strct }}{ {{ .Field }}:{ {{ .Field }} } }) DETACH DELETE {{ toLowerFirst $strct }}", map[string]interface{}{
 		"{{ .Field }}":{{ toLowerFirst .Name }},
 	})
 	return err

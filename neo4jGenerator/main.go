@@ -39,7 +39,7 @@ func main() {
 	}
 
 	if *out == "" {
-		*out = ToLowerFirst(st) + "Neo4jService.go"
+		*out = ToLowerFirst(st) + "Neo4jService_generated.go"
 
 	}
 	if err := ioutil.WriteFile(*out, buf.Bytes(), 0666); err != nil {
